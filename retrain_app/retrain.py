@@ -119,8 +119,6 @@ def retrain_model_all():
         for task in tasks:
             for hours in hours_list:
 
-                X,y,y_scaler,X_Scaler = preprocess_dataset_st(df_mc,df_st,hours,task) if task=="solder_thickness" else preprocess_dataset_ct(df_mc,df_ct,hours,task)
-
                 url = 'http://nginx:80/update_training_status'
                 headers = {'Content-Type': 'application/json'}
 
@@ -130,6 +128,7 @@ def retrain_model_all():
                     }
                 x = requests.post(url, json = obj, headers=headers)
 
+                X,y,y_scaler,X_Scaler = preprocess_dataset_st(df_mc,df_st,hours,task) if task=="solder_thickness" else preprocess_dataset_ct(df_mc,df_ct,hours,task)
                 success = model_retrain(X,y,y_scaler,X_Scaler,task,hours,param.epoch)
 
                 obj["status"] = "idle"
