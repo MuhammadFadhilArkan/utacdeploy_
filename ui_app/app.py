@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import requests
 
+
+st.set_page_config(layout="wide")
 st.write("""
 # Model Retraining Interface
 """)
@@ -19,14 +21,20 @@ if retraining_mode=='all model':
     if mc_data is not None:
         mc_data = pd.read_csv(mc_data)
         mc_data.to_csv("mc.csv",index=False)
+        st.text('Machine Data Summary')
+        st.dataframe(mc_data.describe())
         #minioClient.fput_object("dataset","mc.csv","mc.csv")
     if ct_data is not None:
         ct_data = pd.read_csv(ct_data)
         ct_data.to_csv("ct.csv",index=False)
+        st.text('Chemical Tin Data Summary')
+        st.dataframe(ct_data.describe())
         #minioClient.fput_object("dataset","ct.csv","ct.csv")
     if st_data is not None:
         st_data = pd.read_csv(st_data)
         st_data.to_csv("st.csv",index=False)
+        st.text('Solder Thickness Data Summary')
+        st.dataframe(st_data.describe())
         #minioClient.fput_object("dataset","st.csv","st.csv")
 
     if st.sidebar.button("Start Retrain"):
@@ -39,7 +47,7 @@ if retraining_mode=='all model':
                 "st_path":"st.csv"
                 }
         x = requests.post(url, json = obj, headers=headers)
-        st.info('Model Retraining Started')
+        st.info(f'Model Retraining Started, See the progress [here](http://localhost:3000)')
 
 elif retraining_mode=='specific model':
     model_name = st.sidebar.selectbox('Model Name',('chemical_tin','solder_thickness'))
@@ -52,10 +60,14 @@ elif retraining_mode=='specific model':
     if mc_data is not None:
         mc_data = pd.read_csv(mc_data)
         mc_data.to_csv("mc.csv",index=False)
+        st.text('Machine Data Summary')
+        st.dataframe(mc_data.describe())
         #minioClient.fput_object("dataset","mc.csv","mc.csv")
     if spc_data is not None:
         spc_data = pd.read_csv(spc_data)
         spc_data.to_csv("spc.csv",index=False)
+        st.text(f'{model_name} Data Summary')
+        st.dataframe(spc_data.describe())
         #minioClient.fput_object("dataset","spc.csv","spc.csv")
 
     if st.sidebar.button("Start Retrain"):
@@ -68,5 +80,5 @@ elif retraining_mode=='specific model':
                 "spc_path":"spc.csv"
                 }
         x = requests.post(url, json = obj, headers=headers)
-        st.info('Model Retraining Started')
+        st.info(f'Model Retraining Started, See the progress [here](http://localhost:3000)')
         
