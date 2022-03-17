@@ -9,11 +9,13 @@ services:
     ports:
       - 80:80
       - 81:81
+      - 82:82
     networks:
       - my-network
     depends_on:
       - flask
       - flask_retrain
+      - streamlit
 
   flask:
     build:
@@ -48,6 +50,23 @@ services:
       my-network:
         aliases:
           - flask-retrain_app
+
+  streamlit:
+    build:
+      context: ./
+      dockerfile: ui_app/Dockerfile
+    container_name: streamlit
+    environment:
+      - RETRAIN_IP=${RETRAIN_IP}
+    command: streamlit run ui_app/app.py
+    ports:
+      - 8501:8501
+    volumes:
+      - ./:/var/www
+    networks:
+      my-network:
+        aliases:
+          - streamlit-app
           
   prometheus:
     image: bitnami/prometheus

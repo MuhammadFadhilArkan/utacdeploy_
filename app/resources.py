@@ -5,11 +5,18 @@ import os
 import mlflow
 import onnx
 from retrain_app.retrain_model import use_retrained_model
+from retrain_app.minio_client import MINIO
 class RSC:
 
     def __init__(self,is_first=False):
 
         if is_first:
+
+            minio = MINIO()
+            minioClient = minio.minioClient
+            found = minioClient.bucket_exists("mlflow")
+            if not found:
+                minioClient.make_bucket("mlflow")
 
             ip = os.environ['RETRAIN_IP']
             os.environ["AWS_ACCESS_KEY_ID"] = "minio"

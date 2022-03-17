@@ -13,6 +13,9 @@ app = Flask(__name__)
 print("creating minio client")
 minio = MINIO()
 minioClient = minio.minioClient
+found = minioClient.bucket_exists("mlflow")
+if not found:
+    minioClient.make_bucket("mlflow")
 print("minio client created")
 
 print("setting up prometheus endpoint")
@@ -178,6 +181,115 @@ def change_production_model():
 
     try:
         return 'Success'
+    except:
+        return 'There is an issue'
+
+
+@app.route('/retrain_model_streamlit', methods=['POST'])
+def retrain_model_streamlit():
+    context = request.get_json()
+    param.task = context['model_name']
+    param.hours = context['hours']
+    param.epoch = context['epoch']
+    param.mc_path = context['mc_path']
+    param.spc_path = context['spc_path']
+    
+    response = Response(f'retraining {param.task}_{param.hours} model started')
+    
+    @response.call_on_close
+    def on_close():
+
+        df_mc = pd.read_csv("mc.csv")
+        df_spc = pd.read_csv("spc.csv")
+
+        url = 'http://nginx:80/update_training_status'
+        headers = {'Content-Type': 'application/json'}
+
+        obj = {"task":param.task,
+               "hours":param.hours,
+               "status":"retraining"
+               }
+        x = requests.post(url, json = obj, headers=headers)
+
+        X,y,y_scaler,X_Scaler = preprocess_dataset_st(df_mc,df_spc,param.hours,param.task) if param.task=="solder_thickness" else preprocess_dataset_ct(df_mc,df_spc,param.hours,param.task)
+        success = model_retrain(X,y,y_scaler,X_Scaler,param.task,param.hours,param.epoch)
+
+        obj["status"] = "idle"
+        x = requests.post(url, json = obj, headers=headers)
+
+        if success:   
+            print("reinit resource")
+            from app.resources import RSC
+            global rsc
+            rsc = RSC()
+            print("new resource is initialized")
+
+            url = 'http://nginx:80/update_model'
+            headers = {'Content-Type': 'application/json'}
+            obj = {"task":param.task,
+                   "hours":param.hours
+                   }
+            x = requests.post(url, json = obj, headers=headers)
+
+    try:
+        return response
+    except:
+        return 'There is an issue'
+
+@app.route('/retrain_model_all_streamlit', methods=['POST'])
+def retrain_model_all_streamlit():
+    context = request.get_json()
+    param.epoch = context['epoch']
+    param.mc_path = context['mc_path']
+    param.ct_path = context['ct_path']
+    param.st_path = context['st_path']
+    
+    response = Response('retraining all model started')
+    
+    @response.call_on_close
+    def on_close():
+
+        df_mc = pd.read_csv("mc.csv")
+        df_ct = pd.read_csv("ct.csv")
+        df_st = pd.read_csv("st.csv")
+
+        tasks = ['chemical_tin','solder_thickness']
+        hours_list = [3,24,168]
+
+        for task in tasks:
+            for hours in hours_list:
+
+                url = 'http://nginx:80/update_training_status'
+                headers = {'Content-Type': 'application/json'}
+
+                obj = {"task":task,
+                    "hours":hours,
+                    "status":"retraining"
+                    }
+                x = requests.post(url, json = obj, headers=headers)
+
+                X,y,y_scaler,X_Scaler = preprocess_dataset_st(df_mc,df_st,hours,task) if task=="solder_thickness" else preprocess_dataset_ct(df_mc,df_ct,hours,task)
+                success = model_retrain(X,y,y_scaler,X_Scaler,task,hours,param.epoch)
+
+                obj["status"] = "idle"
+                x = requests.post(url, json = obj, headers=headers)
+
+                if success:   
+                    print("reinit resource")
+                    from app.resources import RSC
+                    global rsc
+                    rsc = RSC()
+                    print("new resource is initialized")
+
+                    url = 'http://nginx:80/update_model'
+                    headers = {'Content-Type': 'application/json'}
+                    obj = {"task":task,
+                        "hours":hours
+                        }
+                    x = requests.post(url, json = obj, headers=headers)
+
+    try:
+        return response
     except:
         return 'There is an issue'
 

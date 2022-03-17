@@ -1,0 +1,4 @@
+numpy
+prometheus-client
+pandas
+streamlit
