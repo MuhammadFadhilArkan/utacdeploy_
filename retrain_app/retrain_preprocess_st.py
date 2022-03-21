@@ -6,11 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 def get_feat_cols():
     feature = ['mean','std','min','max','qntl1','qntl3','median','rows','dow','hod','type']
-    column = ['Converyer_Belt_Speed_m_min', 'Blower_Pressure_Bar', 'Temp_test_degree_C',
-       'MatteTIn_Curent1_Amp', 'MatteTIn_Curent2_Amp', 'MatteTIn_Curent3_Amp',
-       'MatteTIn_Curent4_Amp', 'MatteTIn_Curent5_Amp',
-       'Blower_motor_R_Current_Amp', 'Blower_motor_S_Current_Amp',
-       'Blower_motor_T_Current_Amp']
+    column = ['Converyer_Belt_Speed_m_min', 'Blower_Pressure_Bar','MatteTIn_Curent_Amp']
 
     feature_columns = []
     for i,ftr in enumerate(feature):
@@ -157,7 +153,7 @@ def preprocess_dataset_st(df_mc,df_spc,hours,task):
     df_spc2 = df_spc.copy()
     df_mc2 = df_mc.copy()
 
-    df_mc2.drop(['mc_id'], axis = 1, inplace = True) 
+    #df_mc2.drop(['mc_id'], axis = 1, inplace = True) 
 
     if 'LSL' in df_spc2.columns:
         df_spc2['type'] = df_spc2['LSL']==200
@@ -170,7 +166,7 @@ def preprocess_dataset_st(df_mc,df_spc,hours,task):
     df_spc2.reset_index(inplace=True)
     df_spc2.drop(['index'], axis = 1, inplace = True) 
     df_mc2.reset_index(inplace=True)
-    df_mc2.drop(['index','2R2_Temp_degreeC','Vibration_mm_sec','BLOWER_TEMP_B_degreeC'], axis = 1, inplace = True) 
+    df_mc2 = df_mc2[['date_time','Converyer_Belt_Speed_m_min','Blower_Pressure_Bar','MatteTIn_Curent_Amp']]
 
     df_spc3 = df_spc2.copy()
     df_spc3['DATE_TIME'] = pd.to_datetime(df_spc3['DATE_TIME'])
