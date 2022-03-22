@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 import requests
+import os
 
+ip = os.environ['RETRAIN_IP']
 
 st.set_page_config(layout="wide")
 st.write("""
@@ -47,7 +49,7 @@ if retraining_mode=='all model':
                 "st_path":"st.csv"
                 }
         x = requests.post(url, json = obj, headers=headers)
-        st.info(f'Model Retraining Started, See the progress [here](http://localhost:3000)')
+        st.info(f'Model Retraining Started, See the progress [here](http://{ip}:3000)')
 
 elif retraining_mode=='specific model':
     model_name = st.sidebar.selectbox('Model Name',('chemical_tin','solder_thickness'))
@@ -80,5 +82,5 @@ elif retraining_mode=='specific model':
                 "spc_path":"spc.csv"
                 }
         x = requests.post(url, json = obj, headers=headers)
-        st.info(f'Model Retraining Started, See the progress [here](http://localhost:3000)')
+        st.info(f'Model Retraining Started, See the progress [here](http://{ip}:3000)')
         
