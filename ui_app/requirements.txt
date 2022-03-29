@@ -2,3 +2,4 @@ numpy
 prometheus-client
 pandas
 streamlit
+click==8.0.4
