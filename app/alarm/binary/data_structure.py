@@ -15,10 +15,10 @@ class AlarmBinary(BaseModel):
     qntl3_Blower_Pressure_Bar:float
     min_Blower_Pressure_Bar:float
     max_Blower_Pressure_Bar:float
-    mean_MatteTIn_Curent_Amp_Avg:float
-    median_MatteTIn_Curent_Amp_Avg:float
-    std_MatteTIn_Curent_Amp_Avg:float
-    qntl1_MatteTIn_Curent_Amp_Avg:float
-    qntl3_MatteTIn_Curent_Amp_Avg:float
-    min_MatteTIn_Curent_Amp_Avg:float
-    max_MatteTIn_Curent_Amp_Avg:float       
+    mean_MatteTIn_Curent_Amp:float
+    median_MatteTIn_Curent_Amp:float
+    std_MatteTIn_Curent_Amp:float
+    qntl1_MatteTIn_Curent_Amp:float
+    qntl3_MatteTIn_Curent_Amp:float
+    min_MatteTIn_Curent_Amp:float
+    max_MatteTIn_Curent_Amp:float       
