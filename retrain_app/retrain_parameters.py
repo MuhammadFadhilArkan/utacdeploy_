@@ -8,3 +8,5 @@ class PARAM():
         self.spc_path = ''
         self.ct_path = ''
         self.st_path = ''
+        self.alarm_path = ''
+        self.defect_path = ''

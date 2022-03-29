@@ -19,3 +19,10 @@ class DB:
 
         self.ct_gtruth = self.mydb["chemical tin groud truth"]
         self.st_gtruth = self.mydb["solder thickness groud truth"]
+        
+        # alarm & defect
+        self.AlarmBinary1hour_col = self.mydb["alarm binary 1 hour"]
+        self.AlarmMulti1hour_col = self.mydb["alarm multiclass 1 hour"]
+        
+        self.DefectmBinary1hour_col = self.mydb["defect binary 1 hour"]
+        self.DefectMulti1hour_col = self.mydb["defect multiclass 1 hour"]

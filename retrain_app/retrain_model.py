@@ -14,6 +14,9 @@ import tf2onnx
 import onnxruntime as rt
 from pickle import dump, load
 from retrain_app.minio_client import MINIO
+from lightgbm import LGBMClassifier
+from sklearn.ensemble import RandomForestClassifier
+import joblib
 
 def create_model_simpleNN(shape,shape_target):
     tf.keras.backend.clear_session()
@@ -196,13 +199,19 @@ def model_retrain(X,y,Y_scaler,X_Scaler,task,hours,epoch):
 
 def change_production_model_to(task,hours,model_version):
 
-    name2id = {"chemical_tin_3":1,
-               "chemical_tin_24":2,
-               "chemical_tin_168":3,
-               "solder_thickness_3":4,
-               "solder_thickness_24":5,
-               "solder_thickness_168":6
-               }
+    name2id = {
+            "chemical_tin_3":1,
+            "chemical_tin_24":2,
+            "chemical_tin_168":3,
+            "solder_thickness_3":4,
+            "solder_thickness_24":5,
+            "solder_thickness_168":6,
+            
+            "alarm_binary_1":7,
+            "alarm_multiclass_1":8,
+            "defect_binary_1":9,
+            "defect_multiclass_1":10
+            }
 
     ip = os.environ['RETRAIN_IP']
     os.environ["AWS_ACCESS_KEY_ID"] = "minio"
@@ -226,18 +235,27 @@ def change_production_model_to(task,hours,model_version):
 
     exp_id = name2id[model_name]
 
-    minioClient.fget_object('mlflow',
-                                f"{exp_id}/{run_id}/artifacts/X_scaler.pkl",
-                                f'/var/www/app/{task}/hours{hours}/X_scaler.pkl'
-                                )
-    minioClient.fget_object('mlflow',
-                                f"{exp_id}/{run_id}/artifacts/y_scaler.pkl",
-                                f'/var/www/app/{task}/hours{hours}/y_scaler.pkl'
-                                )
-    minioClient.fget_object('mlflow',
-                                f"{exp_id}/{run_id}/artifacts/onnx_model/model.onnx",
-                                f'/var/www/app/{task}/hours{hours}/model.onnx'
-                                )
+    if task=='chemical_tin' or task=='solder_thickness':
+        
+        minioClient.fget_object('mlflow',
+                                    f"{exp_id}/{run_id}/artifacts/X_scaler.pkl",
+                                    f'/var/www/app/{task}/hours{hours}/X_scaler.pkl'
+                                    )
+        minioClient.fget_object('mlflow',
+                                    f"{exp_id}/{run_id}/artifacts/y_scaler.pkl",
+                                    f'/var/www/app/{task}/hours{hours}/y_scaler.pkl'
+                                    )
+        minioClient.fget_object('mlflow',
+                                    f"{exp_id}/{run_id}/artifacts/onnx_model/model.onnx",
+                                    f'/var/www/app/{task}/hours{hours}/model.onnx'
+                                    )
+    
+    else:
+        
+        minioClient.fget_object('mlflow',
+                                    f"{exp_id}/{run_id}/artifacts/model/model.pkl",
+                                    '/var/www/app/{}/{}/model.sav'.format(task.split('_', 1)[0], task.split('_', 1)[1])
+                                    )
 
     state = 'Archived'
     latest_version_info = client.get_latest_versions(f'{task}_{hours}', stages=["Production"])
@@ -249,3 +267,89 @@ def change_production_model_to(task,hours,model_version):
     change_model_state(state,model_version_details)
 
     return True
+
+### Alarm & Defect
+def create_model_LightGBM(num_leaves, max_depth, lr, n_estimators, max_bin, boosting_type, obj='multiclass'):
+    np.random.seed(42)
+    model = LGBMClassifier(num_leaves=num_leaves, max_depth=max_depth, learning_rate=lr, n_estimators=n_estimators, objective=obj, max_bin=max_bin, boosting_type=boosting_type, class_weight='balanced')
+
+    return model
+
+def create_model_RandomForest(criterion, max_depth, n_estimators):
+    np.random.seed(42)
+    model = RandomForestClassifier(criterion=criterion, max_depth=max_depth, n_estimators=n_estimators, class_weight='balanced')
+
+    return model
+
+def classification_evaluation_metrics_func(y_true, y_pred):
+
+    Acc = metrics.accuracy_score(y_true, y_pred)
+    Precision_weighted_avg = metrics.precision_score(y_true, y_pred, average='weighted')
+    Recall_weighted_avg = metrics.recall_score(y_true, y_pred, average='weighted')
+    F1_weighted_avg = metrics.f1_score(y_true, y_pred, average='weighted')
+
+    return Acc,Precision_weighted_avg,Recall_weighted_avg,F1_weighted_avg
+
+def classification_evaluate_model(model, X_test, y_test):
+
+    pred = model.predict(X_test)
+    pred = pred.reshape(-1,1)
+    Acc,Precision_weighted_avg,Recall_weighted_avg,F1_weighted_avg = classification_evaluation_metrics_func(y_test,pred)
+
+    return Acc,Precision_weighted_avg,Recall_weighted_avg,F1_weighted_avg
+
+def classification_model_retrain(X_train, X_test, y_train, y_test ,task, hours):
+
+    ip = os.environ['RETRAIN_IP']
+    os.environ["AWS_ACCESS_KEY_ID"] = "minio"
+    os.environ["AWS_SECRET_ACCESS_KEY"] = "minio123"
+    os.environ["MLFLOW_S3_ENDPOINT_URL"] = f"http://{ip}:9000"
+
+    mlflow.set_tracking_uri(f'http://{ip}:5000')
+    mlflow.set_experiment(f"{task}_{hours}")
+
+    with mlflow.start_run():
+
+        global retraining_info
+        retraining_info = 'is training'
+
+        if task == 'alarm_binary':
+            model = create_model_RandomForest(criterion='gini', max_depth=11, n_estimators=77)
+        elif task == 'alarm_multiclass':
+            model = create_model_LightGBM(n_estimators=5148, lr=0.23349601994103397, num_leaves=2880, max_depth=12, max_bin=257, boosting_type='gbdt')
+        elif task == 'defect_binary':
+            model = create_model_RandomForest(criterion='gini', max_depth=26, n_estimators=329)
+        elif task == 'defect_multiclass':
+            model = create_model_RandomForest(criterion='entropy', max_depth=16, n_estimators=468)
+        model.fit(X_train, y_train)
+        Acc, Precision_weighted_avg, Recall_weighted_avg, F1_weighted_avg = classification_evaluate_model(model, X_test, y_test)
+        mlflow.log_metric("Acc", Acc)
+        mlflow.log_metric("Precision_weighted_avg", Precision_weighted_avg)
+        mlflow.log_metric("Recall_weighted_avg", Recall_weighted_avg)
+        mlflow.log_metric("F1_weighted_avg", F1_weighted_avg)
+        run_id = mlflow.active_run().info.run_id
+        retraining_info = 'no training task'
+
+        output_path = '/var/www/app/{}/{}/model.sav'.format(task.split('_', 1)[0], task.split('_', 1)[1])
+        mlflow.sklearn.log_model(model, "model")
+        
+        model_latest = joblib.load('/var/www/app/{}/{}/model.sav'.format(task.split('_', 1)[0], task.split('_', 1)[1]))
+        Acc_latest,Precision_weighted_avg_latest,Recall_weighted_avg_latest,F1_weighted_avg_latest = classification_evaluate_model(model_latest,X_test,y_test)
+
+        if F1_weighted_avg>F1_weighted_avg_latest:
+            joblib.dump(model, output_path, compress=3)
+        
+            state = 'Archived'
+            client = MlflowClient()
+            latest_version_info = client.get_latest_versions(f'{task}_{hours}', stages=["Production"])
+            latest_production_version = int(latest_version_info[0].version)
+            change_model_state_2(state,f"{task}_{hours}",latest_production_version)
+
+            state='Production'
+            use_retrained_model(state,task,hours,run_id)
+
+        else:
+            state='Archived'
+            use_retrained_model(state,task,hours,run_id)
+
+        return True

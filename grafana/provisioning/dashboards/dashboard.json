@@ -21,7 +21,6 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -96,7 +95,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -139,72 +139,6 @@
       ],
       "title": "Chemical Tin Prediction",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "XnqeLjTnk"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "mappings": [],
-          "max": 1,
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "orange",
-                "value": 70
-              },
-              {
-                "color": "red",
-                "value": 85
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 0
-      },
-      "id": 6,
-      "options": {
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "8.3.4",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "XnqeLjTnk"
-          },
-          "exemplar": true,
-          "expr": "request_latency_seconds{endpoint=~\"/predict/ct/hours168|/predict/ct/hours24|/predict/ct/hours3|/predict/st/hours168|/predict/st/hours24|/predict/st/hours3\"}",
-          "interval": "",
-          "legendFormat": "{{endpoint}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Latency",
-      "type": "gauge"
     },
     {
       "datasource": {
@@ -264,8 +198,8 @@
       "gridPos": {
         "h": 7,
         "w": 12,
-        "x": 0,
-        "y": 7
+        "x": 12,
+        "y": 0
       },
       "id": 4,
       "options": {
@@ -275,7 +209,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "targets": [
@@ -325,74 +260,12 @@
       },
       "fieldConfig": {
         "defaults": {
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 7
-      },
-      "id": 8,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "text": {
-          "titleSize": 20
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.3.4",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "XnqeLjTnk"
-          },
-          "exemplar": true,
-          "expr": "request_count_total{endpoint=~\"/predict/ct/hours168|/predict/ct/hours24|/predict/ct/hours3|/predict/st/hours168|/predict/st/hours24|/predict/st/hours3\"}",
-          "interval": "",
-          "legendFormat": "{{endpoint}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Throughput",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "XnqeLjTnk"
-      },
-      "fieldConfig": {
-        "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-greens"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 1
           },
           "mappings": [],
           "thresholds": {
@@ -415,7 +288,373 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 14
+        "y": 7
+      },
+      "id": 16,
+      "options": {
+        "colWidth": 0.9,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_no_alarm_prediction",
+          "interval": "",
+          "legendFormat": "No Alarm",
+          "refId": "No Alarm"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_inload_prob_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "INLOAD PROB***",
+          "refId": "INLOAD PROB***"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_others_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Other",
+          "refId": "Other"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_others_machine_problem_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Others Machine Problem***",
+          "refId": "Others Machine Problem***"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_rectifiers_problem_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Rectifiers problem***",
+          "refId": "Rectifiers problem***"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_unload_prob_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "UNLOAD PROB***",
+          "refId": "UNLOAD PROB***"
+        }
+      ],
+      "title": "Alarm Prediction (1 hour ahead)",
+      "type": "status-history"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "XnqeLjTnk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-greens"
+          },
+          "custom": {
+            "fillOpacity": 70,
+            "lineWidth": 1
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
+      "id": 18,
+      "options": {
+        "colWidth": 0.9,
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "rowHeight": 0.9,
+        "showValue": "never",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_no_defect_prediction",
+          "interval": "",
+          "legendFormat": "No Defect",
+          "refId": "No Defect"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_copper_residue_gu_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "COPPER RESIDUE_GU",
+          "refId": "COPPER RESIDUE_GU"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_exposed_foreign_material_dot_gt_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "EXPOSED FOREIGN MATERIAL (DOT)_GT",
+          "refId": "EXPOSED FOREIGN MATERIAL (DOT)_GT"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_flash_resin_bleed_sm_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "FLASH / RESIN BLEED_SM",
+          "refId": "FLASH / RESIN BLEED_SM"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_others_defect_prediction",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "Other",
+          "refId": "Other"
+        }
+      ],
+      "title": "Defect Prediction (1 hour ahead)",
+      "type": "status-history"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "XnqeLjTnk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "text": {
+          "titleSize": 20
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_count_total{endpoint=~\"/predict/ct/hours168|/predict/ct/hours24|/predict/ct/hours3|/predict/st/hours168|/predict/st/hours24|/predict/st/hours3|/predict/alarm/hour1|/predict/defect/hour1\"}",
+          "interval": "",
+          "legendFormat": "{{endpoint}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Throughput",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "XnqeLjTnk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 1,
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "id": 6,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "8.4.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "request_latency_seconds{endpoint=~\"/predict/ct/hours168|/predict/ct/hours24|/predict/ct/hours3|/predict/st/hours168|/predict/st/hours24|/predict/st/hours3|/predict/alarm/hour1|/predict/defect/hour1\"}",
+          "interval": "",
+          "legendFormat": "{{endpoint}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Latency",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "XnqeLjTnk"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 22
       },
       "id": 10,
       "options": {
@@ -432,7 +671,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.1",
       "targets": [
         {
           "datasource": {
@@ -504,6 +743,54 @@
           "interval": "",
           "legendFormat": "st168hours",
           "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_version_alarm_binary{}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "binary_alarm",
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_version_alarm_multiclass{}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "multiclass_alarm",
+          "refId": "H"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_version_defect_binary{}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "binary_defect",
+          "refId": "I"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_version_defect_multiclass{}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "multiclass_defect",
+          "refId": "J"
         }
       ],
       "title": "Model Version",
@@ -540,7 +827,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 22
       },
       "id": 12,
       "options": {
@@ -557,7 +844,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.1",
       "targets": [
         {
           "datasource": {
@@ -629,6 +916,54 @@
           "interval": "",
           "legendFormat": "st168hours",
           "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_retrain_alarm_binary_total{}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "binary_alarm",
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_retrain_alarm_multiclass_total{}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "multiclass_alarm",
+          "refId": "H"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_retrain_defect_binary_total{}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "binary_defect",
+          "refId": "I"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_retrain_defect_multiclass_total{}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "multiclass_defect",
+          "refId": "J"
         }
       ],
       "title": "Model Retrain Total",
@@ -679,7 +1014,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 30
       },
       "id": 14,
       "options": {
@@ -696,7 +1031,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.3.4",
+      "pluginVersion": "8.4.1",
       "targets": [
         {
           "datasource": {
@@ -768,6 +1103,54 @@
           "interval": "",
           "legendFormat": "st168hours",
           "refId": "F"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_status_alarm_binary{model_status_alarm_binary=\"retraining\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "binary_alarm",
+          "refId": "G"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_status_alarm_multiclass{model_status_alarm_multiclass=\"retraining\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "multiclass_alarm",
+          "refId": "H"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_status_defect_binary{model_status_defect_binary=\"retraining\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "binary_defect",
+          "refId": "I"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "XnqeLjTnk"
+          },
+          "exemplar": true,
+          "expr": "model_status_defect_multiclass{model_status_defect_multiclass=\"retraining\"}",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "multiclass_defect",
+          "refId": "J"
         }
       ],
       "title": "Model Retraining Status",
@@ -775,7 +1158,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 34,
+  "schemaVersion": 35,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -789,6 +1172,6 @@
   "timezone": "browser",
   "title": "UTAC",
   "uid": "HuMiEConk",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
