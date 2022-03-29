@@ -599,13 +599,13 @@ def predict_alarm_hour1():
                                 qntl3_Blower_Pressure_Bar=data[0][11],
                                 min_Blower_Pressure_Bar=data[0][12],
                                 max_Blower_Pressure_Bar=data[0][13],
-                                mean_MatteTIn_Curent_Amp_Avg=data[0][14],
-                                median_MatteTIn_Curent_Amp_Avg=data[0][15],
-                                std_MatteTIn_Curent_Amp_Avg=data[0][16],
-                                qntl1_MatteTIn_Curent_Amp_Avg=data[0][17],
-                                qntl3_MatteTIn_Curent_Amp_Avg=data[0][18],
-                                min_MatteTIn_Curent_Amp_Avg=data[0][19],
-                                max_MatteTIn_Curent_Amp_Avg=data[0][20]     
+                                mean_MatteTIn_Curent_Amp=data[0][14],
+                                median_MatteTIn_Curent_Amp=data[0][15],
+                                std_MatteTIn_Curent_Amp=data[0][16],
+                                qntl1_MatteTIn_Curent_Amp=data[0][17],
+                                qntl3_MatteTIn_Curent_Amp=data[0][18],
+                                min_MatteTIn_Curent_Amp=data[0][19],
+                                max_MatteTIn_Curent_Amp=data[0][20]     
                                 )
         except ValidationError as e:
             return e.json()
@@ -634,13 +634,13 @@ def predict_alarm_hour1():
                         "qntl3_Blower_Pressure_Bar":str(data[0][11]),
                         "min_Blower_Pressure_Bar":str(data[0][12]),
                         "max_Blower_Pressure_Bar":str(data[0][13]),
-                        "mean_MatteTIn_Curent_Amp_Avg":str(data[0][14]),
-                        "median_MatteTIn_Curent_Amp_Avg":str(data[0][15]),
-                        "std_MatteTIn_Curent_Amp_Avg":str(data[0][16]),
-                        "qntl1_MatteTIn_Curent_Amp_Avg":str(data[0][17]),
-                        "qntl3_MatteTIn_Curent_Amp_Avg":str(data[0][18]),
-                        "min_MatteTIn_Curent_Amp_Avg":str(data[0][19]),
-                        "max_MatteTIn_Curent_Amp_Avg":str(data[0][20]),
+                        "mean_MatteTIn_Curent_Amp":str(data[0][14]),
+                        "median_MatteTIn_Curent_Amp":str(data[0][15]),
+                        "std_MatteTIn_Curent_Amp":str(data[0][16]),
+                        "qntl1_MatteTIn_Curent_Amp":str(data[0][17]),
+                        "qntl3_MatteTIn_Curent_Amp":str(data[0][18]),
+                        "min_MatteTIn_Curent_Amp":str(data[0][19]),
+                        "max_MatteTIn_Curent_Amp":str(data[0][20]),
                         "prediction":str(prediction),
                         "datetime":datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
                     }
@@ -676,13 +676,13 @@ def predict_alarm_hour1():
                                         qntl3_Blower_Pressure_Bar=data[0][11],
                                         min_Blower_Pressure_Bar=data[0][12],
                                         max_Blower_Pressure_Bar=data[0][13],
-                                        mean_MatteTIn_Curent_Amp_Avg=data[0][14],
-                                        median_MatteTIn_Curent_Amp_Avg=data[0][15],
-                                        std_MatteTIn_Curent_Amp_Avg=data[0][16],
-                                        qntl1_MatteTIn_Curent_Amp_Avg=data[0][17],
-                                        qntl3_MatteTIn_Curent_Amp_Avg=data[0][18],
-                                        min_MatteTIn_Curent_Amp_Avg=data[0][19],
-                                        max_MatteTIn_Curent_Amp_Avg=data[0][20]
+                                        mean_MatteTIn_Curent_Amp=data[0][14],
+                                        median_MatteTIn_Curent_Amp=data[0][15],
+                                        std_MatteTIn_Curent_Amp=data[0][16],
+                                        qntl1_MatteTIn_Curent_Amp=data[0][17],
+                                        qntl3_MatteTIn_Curent_Amp=data[0][18],
+                                        min_MatteTIn_Curent_Amp=data[0][19],
+                                        max_MatteTIn_Curent_Amp=data[0][20]
                                         )
             except ValidationError as e:
                 return e.json()
@@ -749,13 +749,13 @@ def predict_alarm_hour1():
                         "qntl3_Blower_Pressure_Bar":str(data[0][11]),
                         "min_Blower_Pressure_Bar":str(data[0][12]),
                         "max_Blower_Pressure_Bar":str(data[0][13]),
-                        "mean_MatteTIn_Curent_Amp_Avg":str(data[0][14]),
-                        "median_MatteTIn_Curent_Amp_Avg":str(data[0][15]),
-                        "std_MatteTIn_Curent_Amp_Avg":str(data[0][16]),
-                        "qntl1_MatteTIn_Curent_Amp_Avg":str(data[0][17]),
-                        "qntl3_MatteTIn_Curent_Amp_Avg":str(data[0][18]),
-                        "min_MatteTIn_Curent_Amp_Avg":str(data[0][19]),
-                        "max_MatteTIn_Curent_Amp_Avg":str(data[0][20]),
+                        "mean_MatteTIn_Curent_Amp":str(data[0][14]),
+                        "median_MatteTIn_Curent_Amp":str(data[0][15]),
+                        "std_MatteTIn_Curent_Amp":str(data[0][16]),
+                        "qntl1_MatteTIn_Curent_Amp":str(data[0][17]),
+                        "qntl3_MatteTIn_Curent_Amp":str(data[0][18]),
+                        "min_MatteTIn_Curent_Amp":str(data[0][19]),
+                        "max_MatteTIn_Curent_Amp":str(data[0][20]),
                         "prediction":str(prediction),
                         "datetime":datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
                     }
@@ -800,13 +800,13 @@ def predict_defect_hour1():
                                 qntl3_Blower_Pressure_Bar=data[0][11],
                                 min_Blower_Pressure_Bar=data[0][12],
                                 max_Blower_Pressure_Bar=data[0][13],
-                                mean_MatteTIn_Curent_Amp_Avg=data[0][14],
-                                median_MatteTIn_Curent_Amp_Avg=data[0][15],
-                                std_MatteTIn_Curent_Amp_Avg=data[0][16],
-                                qntl1_MatteTIn_Curent_Amp_Avg=data[0][17],
-                                qntl3_MatteTIn_Curent_Amp_Avg=data[0][18],
-                                min_MatteTIn_Curent_Amp_Avg=data[0][19],
-                                max_MatteTIn_Curent_Amp_Avg=data[0][20]
+                                mean_MatteTIn_Curent_Amp=data[0][14],
+                                median_MatteTIn_Curent_Amp=data[0][15],
+                                std_MatteTIn_Curent_Amp=data[0][16],
+                                qntl1_MatteTIn_Curent_Amp=data[0][17],
+                                qntl3_MatteTIn_Curent_Amp=data[0][18],
+                                min_MatteTIn_Curent_Amp=data[0][19],
+                                max_MatteTIn_Curent_Amp=data[0][20]
                                 )
         except ValidationError as e:
             return e.json()
@@ -834,13 +834,13 @@ def predict_defect_hour1():
                         "qntl3_Blower_Pressure_Bar":str(data[0][11]),
                         "min_Blower_Pressure_Bar":str(data[0][12]),
                         "max_Blower_Pressure_Bar":str(data[0][13]),
-                        "mean_MatteTIn_Curent_Amp_Avg":str(data[0][14]),
-                        "median_MatteTIn_Curent_Amp_Avg":str(data[0][15]),
-                        "std_MatteTIn_Curent_Amp_Avg":str(data[0][16]),
-                        "qntl1_MatteTIn_Curent_Amp_Avg":str(data[0][17]),
-                        "qntl3_MatteTIn_Curent_Amp_Avg":str(data[0][18]),
-                        "min_MatteTIn_Curent_Amp_Avg":str(data[0][19]),
-                        "max_MatteTIn_Curent_Amp_Avg":str(data[0][20]),
+                        "mean_MatteTIn_Curent_Amp":str(data[0][14]),
+                        "median_MatteTIn_Curent_Amp":str(data[0][15]),
+                        "std_MatteTIn_Curent_Amp":str(data[0][16]),
+                        "qntl1_MatteTIn_Curent_Amp":str(data[0][17]),
+                        "qntl3_MatteTIn_Curent_Amp":str(data[0][18]),
+                        "min_MatteTIn_Curent_Amp":str(data[0][19]),
+                        "max_MatteTIn_Curent_Amp":str(data[0][20]),
                         "prediction":str(prediction),
                         "datetime":datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
                     }
@@ -876,13 +876,13 @@ def predict_defect_hour1():
                                         qntl3_Blower_Pressure_Bar=data[0][11],
                                         min_Blower_Pressure_Bar=data[0][12],
                                         max_Blower_Pressure_Bar=data[0][13],
-                                        mean_MatteTIn_Curent_Amp_Avg=data[0][14],
-                                        median_MatteTIn_Curent_Amp_Avg=data[0][15],
-                                        std_MatteTIn_Curent_Amp_Avg=data[0][16],
-                                        qntl1_MatteTIn_Curent_Amp_Avg=data[0][17],
-                                        qntl3_MatteTIn_Curent_Amp_Avg=data[0][18],
-                                        min_MatteTIn_Curent_Amp_Avg=data[0][19],
-                                        max_MatteTIn_Curent_Amp_Avg=data[0][20]
+                                        mean_MatteTIn_Curent_Amp=data[0][14],
+                                        median_MatteTIn_Curent_Amp=data[0][15],
+                                        std_MatteTIn_Curent_Amp=data[0][16],
+                                        qntl1_MatteTIn_Curent_Amp=data[0][17],
+                                        qntl3_MatteTIn_Curent_Amp=data[0][18],
+                                        min_MatteTIn_Curent_Amp=data[0][19],
+                                        max_MatteTIn_Curent_Amp=data[0][20]
                                         )
             except ValidationError as e:
                 return e.json()
@@ -936,13 +936,13 @@ def predict_defect_hour1():
                         "qntl3_Blower_Pressure_Bar":str(data[0][11]),
                         "min_Blower_Pressure_Bar":str(data[0][12]),
                         "max_Blower_Pressure_Bar":str(data[0][13]),
-                        "mean_MatteTIn_Curent_Amp_Avg":str(data[0][14]),
-                        "median_MatteTIn_Curent_Amp_Avg":str(data[0][15]),
-                        "std_MatteTIn_Curent_Amp_Avg":str(data[0][16]),
-                        "qntl1_MatteTIn_Curent_Amp_Avg":str(data[0][17]),
-                        "qntl3_MatteTIn_Curent_Amp_Avg":str(data[0][18]),
-                        "min_MatteTIn_Curent_Amp_Avg":str(data[0][19]),
-                        "max_MatteTIn_Curent_Amp_Avg":str(data[0][20]),
+                        "mean_MatteTIn_Curent_Amp":str(data[0][14]),
+                        "median_MatteTIn_Curent_Amp":str(data[0][15]),
+                        "std_MatteTIn_Curent_Amp":str(data[0][16]),
+                        "qntl1_MatteTIn_Curent_Amp":str(data[0][17]),
+                        "qntl3_MatteTIn_Curent_Amp":str(data[0][18]),
+                        "min_MatteTIn_Curent_Amp":str(data[0][19]),
+                        "max_MatteTIn_Curent_Amp":str(data[0][20]),
                         "prediction":str(prediction),
                         "datetime":datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
                     }

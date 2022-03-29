@@ -6,11 +6,10 @@ def select_type_mc(df_alarm, df_mc, mc_type='MECO-04'):
     df_alarm_mc_type['dt_start_down'] =  pd.to_datetime(df_alarm_mc_type['dt_start_down'])
     df_alarm_mc_type.sort_values('dt_start_down', inplace=True)
     df_alarm_mc_type.reset_index(drop=True, inplace=True)
-    df_mc_mc_type = df_mc.loc[df_mc.mc_id == mc_type]
+    df_mc_mc_type = df_mc.copy()
     df_mc_mc_type['date_time'] =  pd.to_datetime(df_mc_mc_type['date_time'])
     df_mc_mc_type.sort_values('date_time', inplace=True)
     df_mc_mc_type.reset_index(drop=True, inplace=True)
-    df_mc_mc_type.loc[:, ['MatteTIn_Curent_Amp_Avg']] = df_mc_mc_type[['MatteTIn_Curent1_Amp', 'MatteTIn_Curent2_Amp', 'MatteTIn_Curent3_Amp', 'MatteTIn_Curent4_Amp', 'MatteTIn_Curent5_Amp']].mean(axis=1)
     return df_alarm_mc_type, df_mc_mc_type
 
 def select_data_with_alarm(df_alarm, alarms_list, hist_data_length=3, predict_ahead=1, sampling=False, n_sample=100):
@@ -127,7 +126,7 @@ def binary_alarm_preprocess(df_alarm, df_mc):
                 ]
 
     main_features = [
-                'Converyer_Belt_Speed_m_min', 'Blower_Pressure_Bar', 'MatteTIn_Curent_Amp_Avg'
+                'Converyer_Belt_Speed_m_min', 'Blower_Pressure_Bar', 'MatteTIn_Curent_Amp'
                 ]
 
     df_alarm_meco_04, df_mc_meco_04 = select_type_mc(df_alarm, df_mc)
@@ -157,7 +156,7 @@ def multiclass_alarm_preprocess(df_alarm, df_mc):
                 ]
 
     main_features = [
-                'Converyer_Belt_Speed_m_min', 'Blower_Pressure_Bar', 'MatteTIn_Curent_Amp_Avg'
+                'Converyer_Belt_Speed_m_min', 'Blower_Pressure_Bar', 'MatteTIn_Curent_Amp'
                 ]
     
     df_alarm_meco_04, df_mc_meco_04 = select_type_mc(df_alarm, df_mc)
